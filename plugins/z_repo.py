@@ -2,7 +2,6 @@ import asyncio
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-OWNERS = "https://t.me/Moonshining6"
 from VIPMUSIC import app
 from VIPMUSIC.utils.database import add_served_chat, get_assistant
 
