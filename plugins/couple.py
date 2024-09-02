@@ -134,8 +134,8 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
                     [
                         [
                             InlineKeyboardButton(
-                                text="Aᴅᴅ ᴍᴇ 🌋",
-                                url=f"https://t.me/{app.username}?startgroup=true",
+                                text="˹🕸️ ᴛᴧᴘ тᴏ sᴇᴇ ᴍᴧɢɪᴄ 🕸️˼",
+                                url=f"https://t.me/+fPsCUlG964E5MzY1",
                             )
                         ]
                     ]
@@ -171,8 +171,8 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
                     [
                         [
                             InlineKeyboardButton(
-                                text="Aᴅᴅ ᴍᴇ🌋",
-                                url=f"https://t.me/{app.username}?startgroup=true",
+                                text="˹🕸️ ᴛᴧᴘ тᴏ sᴇᴇ ᴍᴧɢɪᴄ 🕸️˼",
+                                url=f"https://t.me/+fPsCUlG964E5MzY1",
                             )
                         ]
                     ]
