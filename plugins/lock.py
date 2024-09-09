@@ -14,7 +14,6 @@ LOCK_TYPES = {
     'video': filters.video,
     'contact': filters.contact,
     'photo': filters.photo,
-    'gif': filters.document & filters.mime_type("video/mp4"),
     'url': filters.entity(MessageEntity.URL) | filters.caption_entity(MessageEntity.URL),
     'bots': filters.status_update.new_chat_members,
     'forward': filters.forwarded,
