@@ -23,7 +23,7 @@ LOCK_TYPES = {
 }
 
 # Command to lock a specific type
-@app.on_message(filters.command(["lock"]) & filters.user(Config.SUDO_USERS))
+@app.on_message(filters.command(["lock"]) & filters.user(config.SUDO_USERS))
 async def lock_content(client, message):
     if len(message.command) < 2:
         await message.reply_text("Please specify what you want to lock.")
@@ -37,7 +37,7 @@ async def lock_content(client, message):
         await message.reply_text("Invalid lock type.")
 
 # Command to unlock a specific type
-@app.on_message(filters.command(["unlock"]) & filters.user(Config.SUDO_USERS))
+@app.on_message(filters.command(["unlock"]) & filters.user(config.SUDO_USERS))
 async def unlock_content(client, message):
     if len(message.command) < 2:
         await message.reply_text("Please specify what you want to unlock.")
