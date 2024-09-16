@@ -1,9 +1,8 @@
 import os
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from telegraph import upload_file
 from VIPMUSIC import app
-
+from TheApi import api
 
 @app.on_message(filters.command(["tgm", "tgt", "telegraph", "tl"]))
 async def get_link_group(client, message):
@@ -21,35 +20,43 @@ async def get_link_group(client, message):
     elif media.document:
         file_size = media.document.file_size
 
-    if file_size > 5 * 1024 * 1024:
-        return await message.reply_text("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴍᴇᴅɪᴀ ғɪʟᴇ ᴜɴᴅᴇʀ 𝟻MB.")
+    if file_size > 15 * 1024 * 1024:
+        return await message.reply_text("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴍᴇᴅɪᴀ ғɪʟᴇ ᴜɴᴅᴇʀ 15MB.")
+
     try:
         text = await message.reply("Pʀᴏᴄᴇssɪɴɢ...")
 
         async def progress(current, total):
-            await text.edit_text(f"📥 Dᴏᴡɴʟᴏᴀᴅɪɴɢ... {current * 100 / total:.1f}%")
+            try:
+                await text.edit_text(f"📥 Dᴏᴡɴʟᴏᴀᴅɪɴɢ... {current * 100 / total:.1f}%")
+            except Exception:
+                pass
 
         try:
             local_path = await media.download(progress=progress)
-            await text.edit_text("📤Uᴘʟᴏᴀᴅɪɴɢ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ...")
-            upload_path = upload_file(local_path)
+            await text.edit_text("📤 Uᴘʟᴏᴀᴅɪɴɢ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ...")
+
+            upload_path = api.upload_image(local_path)
+
             await text.edit_text(
-                f"🌐 | [ᴛᴇʟᴇɢʀᴀᴘʜ ʟɪɴᴋ](https://telegra.ph{upload_path[0]})",
+                f"🌐 | [ᴜᴘʟᴏᴀᴅᴇᴅ ʟɪɴᴋ]({upload_path})",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
-                                "ᴛᴇʟᴇɢʀᴀᴘʜ ʟɪɴᴋ",
-                                url=f"https://telegra.ph{upload_path[0]}",
+                                "ᴜᴘʟᴏᴀᴅᴇᴅ ғɪʟᴇ",
+                                url=upload_path,
                             )
                         ]
                     ]
                 ),
             )
+
             try:
                 os.remove(local_path)
             except Exception:
                 pass
+
         except Exception as e:
             await text.edit_text(f"❌ Fɪʟᴇ ᴜᴘʟᴏᴀᴅ ғᴀɪʟᴇᴅ\n\n<i>Rᴇᴀsᴏɴ: {e}</i>")
             try:
